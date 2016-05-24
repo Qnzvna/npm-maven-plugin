@@ -30,6 +30,13 @@ public class NPMMojo extends AbstractJavascriptMojo {
     private File outputDirectory;
 
     /**
+     * From which npm get packages
+     *
+     * @parameter expression="${recess.npmUrl}
+     */
+    private String npmUrl = "";
+
+    /**
      * The identifiers of the packages to download. Use the following syntax: package:version
      *
      * @parameter expression="${recess.packages}
@@ -50,6 +57,9 @@ public class NPMMojo extends AbstractJavascriptMojo {
         Log log = getLog();
 
         NPMModule.proxy = settings.getActiveProxy();
+        if (!npmUrl.isEmpty()) {
+            NPMModule.npmUrl = npmUrl;
+        }
         for (String aPackage : packages) {
             NPMModule.fromQueryString(log,aPackage).saveToFileWithDependencies(outputDirectory);
         }
